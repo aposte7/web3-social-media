@@ -43,5 +43,92 @@ contract ProfileManager {
         _;
     }
 
+  
+    function createProfile(
+        string calldata username,
+        string calldata bio,
+        string calldata avatarURI
+    ) external returns (Profile memory) {
 
+        require(profiles[msg.sender].id == 0, "Profile already exists");
+        require(bytes(username).length >= 3, "Username too short");
+        require(usernameTaken[username] == false, "Username already taken");
+
+        _profileCounter++;
+
+
+        Profile memory newProfile = Profile({
+            id: _profileCounter,
+            username: username,
+            bio: bio,
+            avatarURI: avatarURI,
+            owner: msg.sender,
+            createdAt: block.timestamp,
+            updatedAt: block.timestamp
+        });
+
+        profiles[msg.sender] = newProfile;
+
+        profileList.push(newProfile);
+        
+        usernameTaken[username] = true;
+
+        emit ProfileCreated(_profileCounter, msg.sender, username, block.timestamp);
+
+        return newProfile;
+    }
+
+
+    function updateProfile(
+        string calldata newUsername,
+        string calldata newBio,
+        string calldata newAvatarURI
+    ) external onlyProfileOwner returns (Profile memory) {
+
+        Profile storage user = profiles[msg.sender];
+
+        if (keccak256(bytes(newUsername)) != keccak256(bytes(user.username))) {
+            require(bytes(newUsername).length >= 3, "Username too short");
+            require(usernameTaken[newUsername] == false, "Username already taken");
+
+            usernameTaken[user.username] = false;
+            usernameTaken[newUsername] = true;
+
+            user.username = newUsername;
+        }
+
+        user.bio = newBio;
+        user.avatarURI = newAvatarURI;
+        user.updatedAt = block.timestamp;
+
+        emit ProfileUpdated(user.id, msg.sender, block.timestamp);
+
+        return user;
+    }
+
+
+    function getProfileId(address _address) public view returns(uint){
+        require(profiles[_address].id !=0, "Profile not found" );
+
+        return profiles[_address].id;
+    }
+
+
+    function getProfile(address userAddress) external view returns (Profile memory) {
+        require(profiles[userAddress].id != 0, "Profile not found");
+        return profiles[userAddress];
+    }
+
+    function getMyProfile() external view returns (Profile memory) {
+        require(profiles[msg.sender].id != 0, "Profile not found");
+        return profiles[msg.sender];
+    }
+
+    function getAllProfiles() external view returns (Profile[] memory) {
+        return profileList;
+    }
+
+    function totalProfiles() external view returns (uint256) {
+        return _profileCounter;
+    }
 }
