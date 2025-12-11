@@ -1,0 +1,1347 @@
+{
+	"id": "639ac54b3b43e1cf160c632f8105f9d9",
+	"_format": "hh-sol-build-info-1",
+	"solcVersion": "0.8.30",
+	"solcLongVersion": "0.8.30+commit.73712a01",
+	"input": {
+		"language": "Solidity",
+		"sources": {
+			"contracts/ProfileManager.sol": {
+				"content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.20;\r\n\r\ncontract ProfileManager {\r\n\r\n    uint256 private _profileCounter;\r\n\r\n    struct Profile {\r\n        uint256 id;\r\n        string username;\r\n        string bio;\r\n        string avatarURI;      \r\n        address owner;\r\n        uint256 createdAt;\r\n        uint256 updatedAt;\r\n    }\r\n\r\n    mapping(address => Profile) private profiles;\r\n\r\n    mapping(string => bool) private usernameTaken;\r\n\r\n    Profile[] private profileList;\r\n\r\n\r\n\r\n    event ProfileCreated(\r\n        uint256 indexed id,\r\n        address indexed owner,\r\n        string username,\r\n        uint256 timestamp\r\n    );\r\n\r\n    event ProfileUpdated(\r\n        uint256 indexed id,\r\n        address indexed owner,\r\n        uint256 timestamp\r\n    );\r\n\r\n\r\n\r\n    modifier onlyProfileOwner() {\r\n        require(profiles[msg.sender].id != 0, \"Profile does not exist\");\r\n        _;\r\n    }\r\n\r\n\r\n}\r\n"
+			}
+		},
+		"settings": {
+			"optimizer": {
+				"enabled": false,
+				"runs": 200
+			},
+			"outputSelection": {
+				"*": {
+					"": [
+						"ast"
+					],
+					"*": [
+						"abi",
+						"metadata",
+						"devdoc",
+						"userdoc",
+						"storageLayout",
+						"evm.legacyAssembly",
+						"evm.bytecode",
+						"evm.deployedBytecode",
+						"evm.methodIdentifiers",
+						"evm.gasEstimates",
+						"evm.assembly"
+					]
+				}
+			},
+			"remappings": []
+		}
+	},
+	"output": {
+		"contracts": {
+			"contracts/ProfileManager.sol": {
+				"ProfileManager": {
+					"abi": [
+						{
+							"anonymous": false,
+							"inputs": [
+								{
+									"indexed": true,
+									"internalType": "uint256",
+									"name": "id",
+									"type": "uint256"
+								},
+								{
+									"indexed": true,
+									"internalType": "address",
+									"name": "owner",
+									"type": "address"
+								},
+								{
+									"indexed": false,
+									"internalType": "string",
+									"name": "username",
+									"type": "string"
+								},
+								{
+									"indexed": false,
+									"internalType": "uint256",
+									"name": "timestamp",
+									"type": "uint256"
+								}
+							],
+							"name": "ProfileCreated",
+							"type": "event"
+						},
+						{
+							"anonymous": false,
+							"inputs": [
+								{
+									"indexed": true,
+									"internalType": "uint256",
+									"name": "id",
+									"type": "uint256"
+								},
+								{
+									"indexed": true,
+									"internalType": "address",
+									"name": "owner",
+									"type": "address"
+								},
+								{
+									"indexed": false,
+									"internalType": "uint256",
+									"name": "timestamp",
+									"type": "uint256"
+								}
+							],
+							"name": "ProfileUpdated",
+							"type": "event"
+						}
+					],
+					"devdoc": {
+						"kind": "dev",
+						"methods": {},
+						"version": 1
+					},
+					"evm": {
+						"assembly": "    /* \"contracts/ProfileManager.sol\":61:904  contract ProfileManager {... */\n  mstore(0x40, 0x80)\n  callvalue\n  dup1\n  iszero\n  tag_1\n  jumpi\n  revert(0x00, 0x00)\ntag_1:\n  pop\n  dataSize(sub_0)\n  dup1\n  dataOffset(sub_0)\n  0x00\n  codecopy\n  0x00\n  return\nstop\n\nsub_0: assembly {\n        /* \"contracts/ProfileManager.sol\":61:904  contract ProfileManager {... */\n      mstore(0x40, 0x80)\n      revert(0x00, 0x00)\n\n    auxdata: 0xa264697066735822122044e8c156f665d0f0264c0573abf19ab037050532c423862e98354c534e008fa764736f6c634300081e0033\n}\n",
+						"bytecode": {
+							"functionDebugData": {},
+							"generatedSources": [],
+							"linkReferences": {},
+							"object": "6080604052348015600e575f5ffd5b50603e80601a5f395ff3fe60806040525f5ffdfea264697066735822122044e8c156f665d0f0264c0573abf19ab037050532c423862e98354c534e008fa764736f6c634300081e0033",
+							"opcodes": "PUSH1 0x80 PUSH1 0x40 MSTORE CALLVALUE DUP1 ISZERO PUSH1 0xE JUMPI PUSH0 PUSH0 REVERT JUMPDEST POP PUSH1 0x3E DUP1 PUSH1 0x1A PUSH0 CODECOPY PUSH0 RETURN INVALID PUSH1 0x80 PUSH1 0x40 MSTORE PUSH0 PUSH0 REVERT INVALID LOG2 PUSH5 0x6970667358 0x22 SLT KECCAK256 PREVRANDAO 0xE8 0xC1 JUMP 0xF6 PUSH6 0xD0F0264C0573 0xAB CALL SWAP11 0xB0 CALLDATACOPY SDIV SDIV ORIGIN 0xC4 0x23 DUP7 0x2E SWAP9 CALLDATALOAD 0x4C MSTORE8 0x4E STOP DUP16 0xA7 PUSH5 0x736F6C6343 STOP ADDMOD 0x1E STOP CALLER ",
+							"sourceMap": "61:843:0:-:0;;;;;;;;;;;;;;;;;;;"
+						},
+						"deployedBytecode": {
+							"functionDebugData": {},
+							"generatedSources": [],
+							"immutableReferences": {},
+							"linkReferences": {},
+							"object": "60806040525f5ffdfea264697066735822122044e8c156f665d0f0264c0573abf19ab037050532c423862e98354c534e008fa764736f6c634300081e0033",
+							"opcodes": "PUSH1 0x80 PUSH1 0x40 MSTORE PUSH0 PUSH0 REVERT INVALID LOG2 PUSH5 0x6970667358 0x22 SLT KECCAK256 PREVRANDAO 0xE8 0xC1 JUMP 0xF6 PUSH6 0xD0F0264C0573 0xAB CALL SWAP11 0xB0 CALLDATACOPY SDIV SDIV ORIGIN 0xC4 0x23 DUP7 0x2E SWAP9 CALLDATALOAD 0x4C MSTORE8 0x4E STOP DUP16 0xA7 PUSH5 0x736F6C6343 STOP ADDMOD 0x1E STOP CALLER ",
+							"sourceMap": "61:843:0:-:0;;;;;"
+						},
+						"gasEstimates": {
+							"creation": {
+								"codeDepositCost": "12400",
+								"executionCost": "64",
+								"totalCost": "12464"
+							}
+						},
+						"legacyAssembly": {
+							".code": [
+								{
+									"begin": 61,
+									"end": 904,
+									"name": "PUSH",
+									"source": 0,
+									"value": "80"
+								},
+								{
+									"begin": 61,
+									"end": 904,
+									"name": "PUSH",
+									"source": 0,
+									"value": "40"
+								},
+								{
+									"begin": 61,
+									"end": 904,
+									"name": "MSTORE",
+									"source": 0
+								},
+								{
+									"begin": 61,
+									"end": 904,
+									"name": "CALLVALUE",
+									"source": 0
+								},
+								{
+									"begin": 61,
+									"end": 904,
+									"name": "DUP1",
+									"source": 0
+								},
+								{
+									"begin": 61,
+									"end": 904,
+									"name": "ISZERO",
+									"source": 0
+								},
+								{
+									"begin": 61,
+									"end": 904,
+									"name": "PUSH [tag]",
+									"source": 0,
+									"value": "1"
+								},
+								{
+									"begin": 61,
+									"end": 904,
+									"name": "JUMPI",
+									"source": 0
+								},
+								{
+									"begin": 61,
+									"end": 904,
+									"name": "PUSH",
+									"source": 0,
+									"value": "0"
+								},
+								{
+									"begin": 61,
+									"end": 904,
+									"name": "PUSH",
+									"source": 0,
+									"value": "0"
+								},
+								{
+									"begin": 61,
+									"end": 904,
+									"name": "REVERT",
+									"source": 0
+								},
+								{
+									"begin": 61,
+									"end": 904,
+									"name": "tag",
+									"source": 0,
+									"value": "1"
+								},
+								{
+									"begin": 61,
+									"end": 904,
+									"name": "JUMPDEST",
+									"source": 0
+								},
+								{
+									"begin": 61,
+									"end": 904,
+									"name": "POP",
+									"source": 0
+								},
+								{
+									"begin": 61,
+									"end": 904,
+									"name": "PUSH #[$]",
+									"source": 0,
+									"value": "0000000000000000000000000000000000000000000000000000000000000000"
+								},
+								{
+									"begin": 61,
+									"end": 904,
+									"name": "DUP1",
+									"source": 0
+								},
+								{
+									"begin": 61,
+									"end": 904,
+									"name": "PUSH [$]",
+									"source": 0,
+									"value": "0000000000000000000000000000000000000000000000000000000000000000"
+								},
+								{
+									"begin": 61,
+									"end": 904,
+									"name": "PUSH",
+									"source": 0,
+									"value": "0"
+								},
+								{
+									"begin": 61,
+									"end": 904,
+									"name": "CODECOPY",
+									"source": 0
+								},
+								{
+									"begin": 61,
+									"end": 904,
+									"name": "PUSH",
+									"source": 0,
+									"value": "0"
+								},
+								{
+									"begin": 61,
+									"end": 904,
+									"name": "RETURN",
+									"source": 0
+								}
+							],
+							".data": {
+								"0": {
+									".auxdata": "a264697066735822122044e8c156f665d0f0264c0573abf19ab037050532c423862e98354c534e008fa764736f6c634300081e0033",
+									".code": [
+										{
+											"begin": 61,
+											"end": 904,
+											"name": "PUSH",
+											"source": 0,
+											"value": "80"
+										},
+										{
+											"begin": 61,
+											"end": 904,
+											"name": "PUSH",
+											"source": 0,
+											"value": "40"
+										},
+										{
+											"begin": 61,
+											"end": 904,
+											"name": "MSTORE",
+											"source": 0
+										},
+										{
+											"begin": 61,
+											"end": 904,
+											"name": "PUSH",
+											"source": 0,
+											"value": "0"
+										},
+										{
+											"begin": 61,
+											"end": 904,
+											"name": "PUSH",
+											"source": 0,
+											"value": "0"
+										},
+										{
+											"begin": 61,
+											"end": 904,
+											"name": "REVERT",
+											"source": 0
+										}
+									]
+								}
+							},
+							"sourceList": [
+								"contracts/ProfileManager.sol",
+								"#utility.yul"
+							]
+						},
+						"methodIdentifiers": {}
+					},
+					"metadata": "{\"compiler\":{\"version\":\"0.8.30+commit.73712a01\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"username\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"}],\"name\":\"ProfileCreated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"}],\"name\":\"ProfileUpdated\",\"type\":\"event\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/ProfileManager.sol\":\"ProfileManager\"},\"evmVersion\":\"prague\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"contracts/ProfileManager.sol\":{\"keccak256\":\"0x79d8018931cd4a63aa4b22b293aa4d8e20f11954e736a1173215a527be1ddf3d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://928877002b0bc196e3ae051dc83199016f04fd62141dccc4a664e43782f4d692\",\"dweb:/ipfs/QmcqNKjXqei13KcQCDpiTiyUdV2JuEuG6AeU3yErRoH5dj\"]}},\"version\":1}",
+					"storageLayout": {
+						"storage": [
+							{
+								"astId": 3,
+								"contract": "contracts/ProfileManager.sol:ProfileManager",
+								"label": "_profileCounter",
+								"offset": 0,
+								"slot": "0",
+								"type": "t_uint256"
+							},
+							{
+								"astId": 23,
+								"contract": "contracts/ProfileManager.sol:ProfileManager",
+								"label": "profiles",
+								"offset": 0,
+								"slot": "1",
+								"type": "t_mapping(t_address,t_struct(Profile)18_storage)"
+							},
+							{
+								"astId": 27,
+								"contract": "contracts/ProfileManager.sol:ProfileManager",
+								"label": "usernameTaken",
+								"offset": 0,
+								"slot": "2",
+								"type": "t_mapping(t_string_memory_ptr,t_bool)"
+							},
+							{
+								"astId": 31,
+								"contract": "contracts/ProfileManager.sol:ProfileManager",
+								"label": "profileList",
+								"offset": 0,
+								"slot": "3",
+								"type": "t_array(t_struct(Profile)18_storage)dyn_storage"
+							}
+						],
+						"types": {
+							"t_address": {
+								"encoding": "inplace",
+								"label": "address",
+								"numberOfBytes": "20"
+							},
+							"t_array(t_struct(Profile)18_storage)dyn_storage": {
+								"base": "t_struct(Profile)18_storage",
+								"encoding": "dynamic_array",
+								"label": "struct ProfileManager.Profile[]",
+								"numberOfBytes": "32"
+							},
+							"t_bool": {
+								"encoding": "inplace",
+								"label": "bool",
+								"numberOfBytes": "1"
+							},
+							"t_mapping(t_address,t_struct(Profile)18_storage)": {
+								"encoding": "mapping",
+								"key": "t_address",
+								"label": "mapping(address => struct ProfileManager.Profile)",
+								"numberOfBytes": "32",
+								"value": "t_struct(Profile)18_storage"
+							},
+							"t_mapping(t_string_memory_ptr,t_bool)": {
+								"encoding": "mapping",
+								"key": "t_string_memory_ptr",
+								"label": "mapping(string => bool)",
+								"numberOfBytes": "32",
+								"value": "t_bool"
+							},
+							"t_string_memory_ptr": {
+								"encoding": "bytes",
+								"label": "string",
+								"numberOfBytes": "32"
+							},
+							"t_string_storage": {
+								"encoding": "bytes",
+								"label": "string",
+								"numberOfBytes": "32"
+							},
+							"t_struct(Profile)18_storage": {
+								"encoding": "inplace",
+								"label": "struct ProfileManager.Profile",
+								"members": [
+									{
+										"astId": 5,
+										"contract": "contracts/ProfileManager.sol:ProfileManager",
+										"label": "id",
+										"offset": 0,
+										"slot": "0",
+										"type": "t_uint256"
+									},
+									{
+										"astId": 7,
+										"contract": "contracts/ProfileManager.sol:ProfileManager",
+										"label": "username",
+										"offset": 0,
+										"slot": "1",
+										"type": "t_string_storage"
+									},
+									{
+										"astId": 9,
+										"contract": "contracts/ProfileManager.sol:ProfileManager",
+										"label": "bio",
+										"offset": 0,
+										"slot": "2",
+										"type": "t_string_storage"
+									},
+									{
+										"astId": 11,
+										"contract": "contracts/ProfileManager.sol:ProfileManager",
+										"label": "avatarURI",
+										"offset": 0,
+										"slot": "3",
+										"type": "t_string_storage"
+									},
+									{
+										"astId": 13,
+										"contract": "contracts/ProfileManager.sol:ProfileManager",
+										"label": "owner",
+										"offset": 0,
+										"slot": "4",
+										"type": "t_address"
+									},
+									{
+										"astId": 15,
+										"contract": "contracts/ProfileManager.sol:ProfileManager",
+										"label": "createdAt",
+										"offset": 0,
+										"slot": "5",
+										"type": "t_uint256"
+									},
+									{
+										"astId": 17,
+										"contract": "contracts/ProfileManager.sol:ProfileManager",
+										"label": "updatedAt",
+										"offset": 0,
+										"slot": "6",
+										"type": "t_uint256"
+									}
+								],
+								"numberOfBytes": "224"
+							},
+							"t_uint256": {
+								"encoding": "inplace",
+								"label": "uint256",
+								"numberOfBytes": "32"
+							}
+						}
+					},
+					"userdoc": {
+						"kind": "user",
+						"methods": {},
+						"version": 1
+					}
+				}
+			}
+		},
+		"sources": {
+			"contracts/ProfileManager.sol": {
+				"ast": {
+					"absolutePath": "contracts/ProfileManager.sol",
+					"exportedSymbols": {
+						"ProfileManager": [
+							65
+						]
+					},
+					"id": 66,
+					"license": "MIT",
+					"nodeType": "SourceUnit",
+					"nodes": [
+						{
+							"id": 1,
+							"literals": [
+								"solidity",
+								"^",
+								"0.8",
+								".20"
+							],
+							"nodeType": "PragmaDirective",
+							"src": "33:24:0"
+						},
+						{
+							"abstract": false,
+							"baseContracts": [],
+							"canonicalName": "ProfileManager",
+							"contractDependencies": [],
+							"contractKind": "contract",
+							"fullyImplemented": true,
+							"id": 65,
+							"linearizedBaseContracts": [
+								65
+							],
+							"name": "ProfileManager",
+							"nameLocation": "70:14:0",
+							"nodeType": "ContractDefinition",
+							"nodes": [
+								{
+									"constant": false,
+									"id": 3,
+									"mutability": "mutable",
+									"name": "_profileCounter",
+									"nameLocation": "110:15:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 65,
+									"src": "94:31:0",
+									"stateVariable": true,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_uint256",
+										"typeString": "uint256"
+									},
+									"typeName": {
+										"id": 2,
+										"name": "uint256",
+										"nodeType": "ElementaryTypeName",
+										"src": "94:7:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_uint256",
+											"typeString": "uint256"
+										}
+									},
+									"visibility": "private"
+								},
+								{
+									"canonicalName": "ProfileManager.Profile",
+									"id": 18,
+									"members": [
+										{
+											"constant": false,
+											"id": 5,
+											"mutability": "mutable",
+											"name": "id",
+											"nameLocation": "168:2:0",
+											"nodeType": "VariableDeclaration",
+											"scope": 18,
+											"src": "160:10:0",
+											"stateVariable": false,
+											"storageLocation": "default",
+											"typeDescriptions": {
+												"typeIdentifier": "t_uint256",
+												"typeString": "uint256"
+											},
+											"typeName": {
+												"id": 4,
+												"name": "uint256",
+												"nodeType": "ElementaryTypeName",
+												"src": "160:7:0",
+												"typeDescriptions": {
+													"typeIdentifier": "t_uint256",
+													"typeString": "uint256"
+												}
+											},
+											"visibility": "internal"
+										},
+										{
+											"constant": false,
+											"id": 7,
+											"mutability": "mutable",
+											"name": "username",
+											"nameLocation": "188:8:0",
+											"nodeType": "VariableDeclaration",
+											"scope": 18,
+											"src": "181:15:0",
+											"stateVariable": false,
+											"storageLocation": "default",
+											"typeDescriptions": {
+												"typeIdentifier": "t_string_storage_ptr",
+												"typeString": "string"
+											},
+											"typeName": {
+												"id": 6,
+												"name": "string",
+												"nodeType": "ElementaryTypeName",
+												"src": "181:6:0",
+												"typeDescriptions": {
+													"typeIdentifier": "t_string_storage_ptr",
+													"typeString": "string"
+												}
+											},
+											"visibility": "internal"
+										},
+										{
+											"constant": false,
+											"id": 9,
+											"mutability": "mutable",
+											"name": "bio",
+											"nameLocation": "214:3:0",
+											"nodeType": "VariableDeclaration",
+											"scope": 18,
+											"src": "207:10:0",
+											"stateVariable": false,
+											"storageLocation": "default",
+											"typeDescriptions": {
+												"typeIdentifier": "t_string_storage_ptr",
+												"typeString": "string"
+											},
+											"typeName": {
+												"id": 8,
+												"name": "string",
+												"nodeType": "ElementaryTypeName",
+												"src": "207:6:0",
+												"typeDescriptions": {
+													"typeIdentifier": "t_string_storage_ptr",
+													"typeString": "string"
+												}
+											},
+											"visibility": "internal"
+										},
+										{
+											"constant": false,
+											"id": 11,
+											"mutability": "mutable",
+											"name": "avatarURI",
+											"nameLocation": "235:9:0",
+											"nodeType": "VariableDeclaration",
+											"scope": 18,
+											"src": "228:16:0",
+											"stateVariable": false,
+											"storageLocation": "default",
+											"typeDescriptions": {
+												"typeIdentifier": "t_string_storage_ptr",
+												"typeString": "string"
+											},
+											"typeName": {
+												"id": 10,
+												"name": "string",
+												"nodeType": "ElementaryTypeName",
+												"src": "228:6:0",
+												"typeDescriptions": {
+													"typeIdentifier": "t_string_storage_ptr",
+													"typeString": "string"
+												}
+											},
+											"visibility": "internal"
+										},
+										{
+											"constant": false,
+											"id": 13,
+											"mutability": "mutable",
+											"name": "owner",
+											"nameLocation": "269:5:0",
+											"nodeType": "VariableDeclaration",
+											"scope": 18,
+											"src": "261:13:0",
+											"stateVariable": false,
+											"storageLocation": "default",
+											"typeDescriptions": {
+												"typeIdentifier": "t_address",
+												"typeString": "address"
+											},
+											"typeName": {
+												"id": 12,
+												"name": "address",
+												"nodeType": "ElementaryTypeName",
+												"src": "261:7:0",
+												"stateMutability": "nonpayable",
+												"typeDescriptions": {
+													"typeIdentifier": "t_address",
+													"typeString": "address"
+												}
+											},
+											"visibility": "internal"
+										},
+										{
+											"constant": false,
+											"id": 15,
+											"mutability": "mutable",
+											"name": "createdAt",
+											"nameLocation": "293:9:0",
+											"nodeType": "VariableDeclaration",
+											"scope": 18,
+											"src": "285:17:0",
+											"stateVariable": false,
+											"storageLocation": "default",
+											"typeDescriptions": {
+												"typeIdentifier": "t_uint256",
+												"typeString": "uint256"
+											},
+											"typeName": {
+												"id": 14,
+												"name": "uint256",
+												"nodeType": "ElementaryTypeName",
+												"src": "285:7:0",
+												"typeDescriptions": {
+													"typeIdentifier": "t_uint256",
+													"typeString": "uint256"
+												}
+											},
+											"visibility": "internal"
+										},
+										{
+											"constant": false,
+											"id": 17,
+											"mutability": "mutable",
+											"name": "updatedAt",
+											"nameLocation": "321:9:0",
+											"nodeType": "VariableDeclaration",
+											"scope": 18,
+											"src": "313:17:0",
+											"stateVariable": false,
+											"storageLocation": "default",
+											"typeDescriptions": {
+												"typeIdentifier": "t_uint256",
+												"typeString": "uint256"
+											},
+											"typeName": {
+												"id": 16,
+												"name": "uint256",
+												"nodeType": "ElementaryTypeName",
+												"src": "313:7:0",
+												"typeDescriptions": {
+													"typeIdentifier": "t_uint256",
+													"typeString": "uint256"
+												}
+											},
+											"visibility": "internal"
+										}
+									],
+									"name": "Profile",
+									"nameLocation": "141:7:0",
+									"nodeType": "StructDefinition",
+									"scope": 65,
+									"src": "134:204:0",
+									"visibility": "public"
+								},
+								{
+									"constant": false,
+									"id": 23,
+									"mutability": "mutable",
+									"name": "profiles",
+									"nameLocation": "382:8:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 65,
+									"src": "346:44:0",
+									"stateVariable": true,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_mapping$_t_address_$_t_struct$_Profile_$18_storage_$",
+										"typeString": "mapping(address => struct ProfileManager.Profile)"
+									},
+									"typeName": {
+										"id": 22,
+										"keyName": "",
+										"keyNameLocation": "-1:-1:-1",
+										"keyType": {
+											"id": 19,
+											"name": "address",
+											"nodeType": "ElementaryTypeName",
+											"src": "354:7:0",
+											"typeDescriptions": {
+												"typeIdentifier": "t_address",
+												"typeString": "address"
+											}
+										},
+										"nodeType": "Mapping",
+										"src": "346:27:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_mapping$_t_address_$_t_struct$_Profile_$18_storage_$",
+											"typeString": "mapping(address => struct ProfileManager.Profile)"
+										},
+										"valueName": "",
+										"valueNameLocation": "-1:-1:-1",
+										"valueType": {
+											"id": 21,
+											"nodeType": "UserDefinedTypeName",
+											"pathNode": {
+												"id": 20,
+												"name": "Profile",
+												"nameLocations": [
+													"365:7:0"
+												],
+												"nodeType": "IdentifierPath",
+												"referencedDeclaration": 18,
+												"src": "365:7:0"
+											},
+											"referencedDeclaration": 18,
+											"src": "365:7:0",
+											"typeDescriptions": {
+												"typeIdentifier": "t_struct$_Profile_$18_storage_ptr",
+												"typeString": "struct ProfileManager.Profile"
+											}
+										}
+									},
+									"visibility": "private"
+								},
+								{
+									"constant": false,
+									"id": 27,
+									"mutability": "mutable",
+									"name": "usernameTaken",
+									"nameLocation": "431:13:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 65,
+									"src": "399:45:0",
+									"stateVariable": true,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_mapping$_t_string_memory_ptr_$_t_bool_$",
+										"typeString": "mapping(string => bool)"
+									},
+									"typeName": {
+										"id": 26,
+										"keyName": "",
+										"keyNameLocation": "-1:-1:-1",
+										"keyType": {
+											"id": 24,
+											"name": "string",
+											"nodeType": "ElementaryTypeName",
+											"src": "407:6:0",
+											"typeDescriptions": {
+												"typeIdentifier": "t_string_storage_ptr",
+												"typeString": "string"
+											}
+										},
+										"nodeType": "Mapping",
+										"src": "399:23:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_mapping$_t_string_memory_ptr_$_t_bool_$",
+											"typeString": "mapping(string => bool)"
+										},
+										"valueName": "",
+										"valueNameLocation": "-1:-1:-1",
+										"valueType": {
+											"id": 25,
+											"name": "bool",
+											"nodeType": "ElementaryTypeName",
+											"src": "417:4:0",
+											"typeDescriptions": {
+												"typeIdentifier": "t_bool",
+												"typeString": "bool"
+											}
+										}
+									},
+									"visibility": "private"
+								},
+								{
+									"constant": false,
+									"id": 31,
+									"mutability": "mutable",
+									"name": "profileList",
+									"nameLocation": "471:11:0",
+									"nodeType": "VariableDeclaration",
+									"scope": 65,
+									"src": "453:29:0",
+									"stateVariable": true,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_array$_t_struct$_Profile_$18_storage_$dyn_storage",
+										"typeString": "struct ProfileManager.Profile[]"
+									},
+									"typeName": {
+										"baseType": {
+											"id": 29,
+											"nodeType": "UserDefinedTypeName",
+											"pathNode": {
+												"id": 28,
+												"name": "Profile",
+												"nameLocations": [
+													"453:7:0"
+												],
+												"nodeType": "IdentifierPath",
+												"referencedDeclaration": 18,
+												"src": "453:7:0"
+											},
+											"referencedDeclaration": 18,
+											"src": "453:7:0",
+											"typeDescriptions": {
+												"typeIdentifier": "t_struct$_Profile_$18_storage_ptr",
+												"typeString": "struct ProfileManager.Profile"
+											}
+										},
+										"id": 30,
+										"nodeType": "ArrayTypeName",
+										"src": "453:9:0",
+										"typeDescriptions": {
+											"typeIdentifier": "t_array$_t_struct$_Profile_$18_storage_$dyn_storage_ptr",
+											"typeString": "struct ProfileManager.Profile[]"
+										}
+									},
+									"visibility": "private"
+								},
+								{
+									"anonymous": false,
+									"eventSelector": "2037719db34f16834a5a6a5ab0becf4fc514c4f4980b21ab7518afb4e47784f2",
+									"id": 41,
+									"name": "ProfileCreated",
+									"nameLocation": "501:14:0",
+									"nodeType": "EventDefinition",
+									"parameters": {
+										"id": 40,
+										"nodeType": "ParameterList",
+										"parameters": [
+											{
+												"constant": false,
+												"id": 33,
+												"indexed": true,
+												"mutability": "mutable",
+												"name": "id",
+												"nameLocation": "542:2:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 41,
+												"src": "526:18:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_uint256",
+													"typeString": "uint256"
+												},
+												"typeName": {
+													"id": 32,
+													"name": "uint256",
+													"nodeType": "ElementaryTypeName",
+													"src": "526:7:0",
+													"typeDescriptions": {
+														"typeIdentifier": "t_uint256",
+														"typeString": "uint256"
+													}
+												},
+												"visibility": "internal"
+											},
+											{
+												"constant": false,
+												"id": 35,
+												"indexed": true,
+												"mutability": "mutable",
+												"name": "owner",
+												"nameLocation": "571:5:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 41,
+												"src": "555:21:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_address",
+													"typeString": "address"
+												},
+												"typeName": {
+													"id": 34,
+													"name": "address",
+													"nodeType": "ElementaryTypeName",
+													"src": "555:7:0",
+													"stateMutability": "nonpayable",
+													"typeDescriptions": {
+														"typeIdentifier": "t_address",
+														"typeString": "address"
+													}
+												},
+												"visibility": "internal"
+											},
+											{
+												"constant": false,
+												"id": 37,
+												"indexed": false,
+												"mutability": "mutable",
+												"name": "username",
+												"nameLocation": "594:8:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 41,
+												"src": "587:15:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_string_memory_ptr",
+													"typeString": "string"
+												},
+												"typeName": {
+													"id": 36,
+													"name": "string",
+													"nodeType": "ElementaryTypeName",
+													"src": "587:6:0",
+													"typeDescriptions": {
+														"typeIdentifier": "t_string_storage_ptr",
+														"typeString": "string"
+													}
+												},
+												"visibility": "internal"
+											},
+											{
+												"constant": false,
+												"id": 39,
+												"indexed": false,
+												"mutability": "mutable",
+												"name": "timestamp",
+												"nameLocation": "621:9:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 41,
+												"src": "613:17:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_uint256",
+													"typeString": "uint256"
+												},
+												"typeName": {
+													"id": 38,
+													"name": "uint256",
+													"nodeType": "ElementaryTypeName",
+													"src": "613:7:0",
+													"typeDescriptions": {
+														"typeIdentifier": "t_uint256",
+														"typeString": "uint256"
+													}
+												},
+												"visibility": "internal"
+											}
+										],
+										"src": "515:122:0"
+									},
+									"src": "495:143:0"
+								},
+								{
+									"anonymous": false,
+									"eventSelector": "35e6b8e222320e0d097581bdac6907cb1b38f1c6b58ebdae7f5ba34ccb2dc5bd",
+									"id": 49,
+									"name": "ProfileUpdated",
+									"nameLocation": "652:14:0",
+									"nodeType": "EventDefinition",
+									"parameters": {
+										"id": 48,
+										"nodeType": "ParameterList",
+										"parameters": [
+											{
+												"constant": false,
+												"id": 43,
+												"indexed": true,
+												"mutability": "mutable",
+												"name": "id",
+												"nameLocation": "693:2:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 49,
+												"src": "677:18:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_uint256",
+													"typeString": "uint256"
+												},
+												"typeName": {
+													"id": 42,
+													"name": "uint256",
+													"nodeType": "ElementaryTypeName",
+													"src": "677:7:0",
+													"typeDescriptions": {
+														"typeIdentifier": "t_uint256",
+														"typeString": "uint256"
+													}
+												},
+												"visibility": "internal"
+											},
+											{
+												"constant": false,
+												"id": 45,
+												"indexed": true,
+												"mutability": "mutable",
+												"name": "owner",
+												"nameLocation": "722:5:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 49,
+												"src": "706:21:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_address",
+													"typeString": "address"
+												},
+												"typeName": {
+													"id": 44,
+													"name": "address",
+													"nodeType": "ElementaryTypeName",
+													"src": "706:7:0",
+													"stateMutability": "nonpayable",
+													"typeDescriptions": {
+														"typeIdentifier": "t_address",
+														"typeString": "address"
+													}
+												},
+												"visibility": "internal"
+											},
+											{
+												"constant": false,
+												"id": 47,
+												"indexed": false,
+												"mutability": "mutable",
+												"name": "timestamp",
+												"nameLocation": "746:9:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 49,
+												"src": "738:17:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_uint256",
+													"typeString": "uint256"
+												},
+												"typeName": {
+													"id": 46,
+													"name": "uint256",
+													"nodeType": "ElementaryTypeName",
+													"src": "738:7:0",
+													"typeDescriptions": {
+														"typeIdentifier": "t_uint256",
+														"typeString": "uint256"
+													}
+												},
+												"visibility": "internal"
+											}
+										],
+										"src": "666:96:0"
+									},
+									"src": "646:117:0"
+								},
+								{
+									"body": {
+										"id": 63,
+										"nodeType": "Block",
+										"src": "803:94:0",
+										"statements": [
+											{
+												"expression": {
+													"arguments": [
+														{
+															"commonType": {
+																"typeIdentifier": "t_uint256",
+																"typeString": "uint256"
+															},
+															"id": 58,
+															"isConstant": false,
+															"isLValue": false,
+															"isPure": false,
+															"lValueRequested": false,
+															"leftExpression": {
+																"expression": {
+																	"baseExpression": {
+																		"id": 52,
+																		"name": "profiles",
+																		"nodeType": "Identifier",
+																		"overloadedDeclarations": [],
+																		"referencedDeclaration": 23,
+																		"src": "822:8:0",
+																		"typeDescriptions": {
+																			"typeIdentifier": "t_mapping$_t_address_$_t_struct$_Profile_$18_storage_$",
+																			"typeString": "mapping(address => struct ProfileManager.Profile storage ref)"
+																		}
+																	},
+																	"id": 55,
+																	"indexExpression": {
+																		"expression": {
+																			"id": 53,
+																			"name": "msg",
+																			"nodeType": "Identifier",
+																			"overloadedDeclarations": [],
+																			"referencedDeclaration": 4294967281,
+																			"src": "831:3:0",
+																			"typeDescriptions": {
+																				"typeIdentifier": "t_magic_message",
+																				"typeString": "msg"
+																			}
+																		},
+																		"id": 54,
+																		"isConstant": false,
+																		"isLValue": false,
+																		"isPure": false,
+																		"lValueRequested": false,
+																		"memberLocation": "835:6:0",
+																		"memberName": "sender",
+																		"nodeType": "MemberAccess",
+																		"src": "831:10:0",
+																		"typeDescriptions": {
+																			"typeIdentifier": "t_address",
+																			"typeString": "address"
+																		}
+																	},
+																	"isConstant": false,
+																	"isLValue": true,
+																	"isPure": false,
+																	"lValueRequested": false,
+																	"nodeType": "IndexAccess",
+																	"src": "822:20:0",
+																	"typeDescriptions": {
+																		"typeIdentifier": "t_struct$_Profile_$18_storage",
+																		"typeString": "struct ProfileManager.Profile storage ref"
+																	}
+																},
+																"id": 56,
+																"isConstant": false,
+																"isLValue": true,
+																"isPure": false,
+																"lValueRequested": false,
+																"memberLocation": "843:2:0",
+																"memberName": "id",
+																"nodeType": "MemberAccess",
+																"referencedDeclaration": 5,
+																"src": "822:23:0",
+																"typeDescriptions": {
+																	"typeIdentifier": "t_uint256",
+																	"typeString": "uint256"
+																}
+															},
+															"nodeType": "BinaryOperation",
+															"operator": "!=",
+															"rightExpression": {
+																"hexValue": "30",
+																"id": 57,
+																"isConstant": false,
+																"isLValue": false,
+																"isPure": true,
+																"kind": "number",
+																"lValueRequested": false,
+																"nodeType": "Literal",
+																"src": "849:1:0",
+																"typeDescriptions": {
+																	"typeIdentifier": "t_rational_0_by_1",
+																	"typeString": "int_const 0"
+																},
+																"value": "0"
+															},
+															"src": "822:28:0",
+															"typeDescriptions": {
+																"typeIdentifier": "t_bool",
+																"typeString": "bool"
+															}
+														},
+														{
+															"hexValue": "50726f66696c6520646f6573206e6f74206578697374",
+															"id": 59,
+															"isConstant": false,
+															"isLValue": false,
+															"isPure": true,
+															"kind": "string",
+															"lValueRequested": false,
+															"nodeType": "Literal",
+															"src": "852:24:0",
+															"typeDescriptions": {
+																"typeIdentifier": "t_stringliteral_e6dbf3d2354088a74d750ac99af7e17669fcda6fdcfa63918e5c6b6c75aef1db",
+																"typeString": "literal_string \"Profile does not exist\""
+															},
+															"value": "Profile does not exist"
+														}
+													],
+													"expression": {
+														"argumentTypes": [
+															{
+																"typeIdentifier": "t_bool",
+																"typeString": "bool"
+															},
+															{
+																"typeIdentifier": "t_stringliteral_e6dbf3d2354088a74d750ac99af7e17669fcda6fdcfa63918e5c6b6c75aef1db",
+																"typeString": "literal_string \"Profile does not exist\""
+															}
+														],
+														"id": 51,
+														"name": "require",
+														"nodeType": "Identifier",
+														"overloadedDeclarations": [
+															4294967278,
+															4294967278,
+															4294967278
+														],
+														"referencedDeclaration": 4294967278,
+														"src": "814:7:0",
+														"typeDescriptions": {
+															"typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+															"typeString": "function (bool,string memory) pure"
+														}
+													},
+													"id": 60,
+													"isConstant": false,
+													"isLValue": false,
+													"isPure": false,
+													"kind": "functionCall",
+													"lValueRequested": false,
+													"nameLocations": [],
+													"names": [],
+													"nodeType": "FunctionCall",
+													"src": "814:63:0",
+													"tryCall": false,
+													"typeDescriptions": {
+														"typeIdentifier": "t_tuple$__$",
+														"typeString": "tuple()"
+													}
+												},
+												"id": 61,
+												"nodeType": "ExpressionStatement",
+												"src": "814:63:0"
+											},
+											{
+												"id": 62,
+												"nodeType": "PlaceholderStatement",
+												"src": "888:1:0"
+											}
+										]
+									},
+									"id": 64,
+									"name": "onlyProfileOwner",
+									"nameLocation": "784:16:0",
+									"nodeType": "ModifierDefinition",
+									"parameters": {
+										"id": 50,
+										"nodeType": "ParameterList",
+										"parameters": [],
+										"src": "800:2:0"
+									},
+									"src": "775:122:0",
+									"virtual": false,
+									"visibility": "internal"
+								}
+							],
+							"scope": 66,
+							"src": "61:843:0",
+							"usedErrors": [],
+							"usedEvents": [
+								41,
+								49
+							]
+						}
+					],
+					"src": "33:873:0"
+				},
+				"id": 0
+			}
+		}
+	}
+}
