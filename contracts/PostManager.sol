@@ -85,10 +85,11 @@ contract PostManager {
 
     function deletePost(uint _postId) external{
         // check if the post exist and the user ownes it.
-        profileManager.getProfileId(msg.sender);
+        uint userId = profileManager.getProfileId(msg.sender);
 
         PostLocation memory loc = postIndex[_postId];
 
+        require(loc.ownerId == userId, "you don't have this post");
         require(_postExists(_postId), "Post doesn't exist");
 
         delete allPosts[loc.index];

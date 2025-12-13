@@ -50,25 +50,12 @@
 			{
 				"inputs": [
 					{
-						"internalType": "string",
-						"name": "_description",
-						"type": "string"
-					}
-				],
-				"name": "createPost",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
 						"internalType": "uint256",
 						"name": "",
 						"type": "uint256"
 					}
 				],
-				"name": "posts",
+				"name": "allPosts",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -88,6 +75,182 @@
 					{
 						"internalType": "uint256",
 						"name": "createdAt",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_comment",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_postId",
+						"type": "uint256"
+					}
+				],
+				"name": "commentOnPost",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_description",
+						"type": "string"
+					}
+				],
+				"name": "createPost",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_postId",
+						"type": "uint256"
+					}
+				],
+				"name": "deletePost",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getAllPosts",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "ownerId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "postId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "description",
+								"type": "string"
+							},
+							{
+								"components": [
+									{
+										"internalType": "uint256",
+										"name": "userId",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "createdAt",
+										"type": "uint256"
+									}
+								],
+								"internalType": "struct PostManager.Like[]",
+								"name": "likes",
+								"type": "tuple[]"
+							},
+							{
+								"components": [
+									{
+										"internalType": "uint256",
+										"name": "commentId",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "postId",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "userId",
+										"type": "uint256"
+									},
+									{
+										"internalType": "string",
+										"name": "comment",
+										"type": "string"
+									},
+									{
+										"internalType": "uint256",
+										"name": "createdAt",
+										"type": "uint256"
+									}
+								],
+								"internalType": "struct PostManager.Comment[]",
+								"name": "comments",
+								"type": "tuple[]"
+							},
+							{
+								"internalType": "uint256",
+								"name": "createdAt",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct PostManager.Post[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "postId",
+						"type": "uint256"
+					}
+				],
+				"name": "postIndex",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "ownerId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "index",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "userId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "userPosts",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "userPostsIndex",
 						"type": "uint256"
 					}
 				],
@@ -123,19 +286,19 @@
 	},
 	"sources": {
 		"contracts/PostManager.sol": {
-			"keccak256": "0x08b9daaba4a2d9942e8ad48a7ab326c29c498567ca09ccf4fb9dab29594bfa47",
+			"keccak256": "0x45ad20c053524e3db9cc16f95b7f479c11880236249eb8d97ff9f4415184a01a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://5e5798c1150252fdf90008a7e75fa0069c3401cdcffa46fe834783faafbeff13",
-				"dweb:/ipfs/QmcKwANkAGFnoGhhaToZDkgWL6zvcR3FCP8dZu1NpHWHuf"
+				"bzz-raw://46e2653ca55043058158b4f145d1bac9a63bde6906eb1c93f7a4d338af7da392",
+				"dweb:/ipfs/QmQSQvKGgxobwfHwn9zpCPNeR6ZJfzfCyuCGbANuaHxHYY"
 			]
 		},
 		"contracts/ProfileManager.sol": {
-			"keccak256": "0x1f5e287e45a0ab5e320add08937d032ffd429cccd9d8026a5afca149495437c3",
+			"keccak256": "0x087eedf218914640230912232f300bcc71be7bebccf69caff5f02ba569e27629",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://384aa2e73d42c02c466c909a43692c880a376d9ebdb29823409c00271127c8af",
-				"dweb:/ipfs/Qmdp6Tg17r2DM2tc56q1g5Mex6WYfYhUsZtAMutasZA2Av"
+				"bzz-raw://78d8399e22e23602d67f0909fc7d49d6cb89310c2864dc159cfc96943f297006",
+				"dweb:/ipfs/QmSpQDgertXwnYcLEFzvresCGiP8m4KaPJXPrj5TUJnvW9"
 			]
 		}
 	},
