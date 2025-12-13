@@ -224,6 +224,181 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
+						"name": "_postId",
+						"type": "uint256"
+					}
+				],
+				"name": "getPostById",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "ownerId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "postId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "like",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "description",
+								"type": "string"
+							},
+							{
+								"components": [
+									{
+										"internalType": "uint256",
+										"name": "commentId",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "postId",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "userId",
+										"type": "uint256"
+									},
+									{
+										"internalType": "string",
+										"name": "comment",
+										"type": "string"
+									},
+									{
+										"internalType": "uint256",
+										"name": "createdAt",
+										"type": "uint256"
+									}
+								],
+								"internalType": "struct PostManager.Comment[]",
+								"name": "comments",
+								"type": "tuple[]"
+							},
+							{
+								"internalType": "uint256",
+								"name": "createdAt",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct PostManager.Post",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_postId",
+						"type": "uint256"
+					}
+				],
+				"name": "getPostLikeCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "userId",
+						"type": "uint256"
+					}
+				],
+				"name": "getPostsByUser",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "ownerId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "postId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "like",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "description",
+								"type": "string"
+							},
+							{
+								"components": [
+									{
+										"internalType": "uint256",
+										"name": "commentId",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "postId",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "userId",
+										"type": "uint256"
+									},
+									{
+										"internalType": "string",
+										"name": "comment",
+										"type": "string"
+									},
+									{
+										"internalType": "uint256",
+										"name": "createdAt",
+										"type": "uint256"
+									}
+								],
+								"internalType": "struct PostManager.Comment[]",
+								"name": "comments",
+								"type": "tuple[]"
+							},
+							{
+								"internalType": "uint256",
+								"name": "createdAt",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct PostManager.Post[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
 						"name": "postId",
 						"type": "uint256"
 					}
@@ -310,11 +485,11 @@
 	},
 	"sources": {
 		"contracts/PostManager.sol": {
-			"keccak256": "0xa1c812b2adb8050c5c175aa1de49c8f2c6e98eb78e5eb04db630e10e37cdc934",
+			"keccak256": "0xf66a521ff386dcee93bbe552e7b28f59010c6863c418e3649140402c89dc26a6",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://ca367e313cd569d75e132397d02859110bc04002c53f830106c58e74b8d6a6be",
-				"dweb:/ipfs/QmRAyqZA5DAjgvwQv12tzRnwzSsPdUGx5wxYRRwXhXUZWs"
+				"bzz-raw://37fdbe4a4502706fe65998711fb69fba690ec9309727809d05c1df91b87a0eed",
+				"dweb:/ipfs/Qmf5JGYTttZWmhKoeDhXF373dAMeSsAsNzS9UdPMBpZsNb"
 			]
 		},
 		"contracts/ProfileManager.sol": {

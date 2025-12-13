@@ -40,7 +40,7 @@ contract PostManager {
         uint index;        
     }
 
-    mapping(uint userId => bool ) likes;
+    mapping(uint userId => uint postId ) likes;
 
     mapping(uint userId => uint[] userPostsIndex) public userPosts; 
    
@@ -78,6 +78,23 @@ contract PostManager {
         return allPosts;
     }
 
+    function getPostById(uint _postId) external view returns(Post memory){
+        require(_postExists(_postId), "Post doesn't exist");
+        PostLocation memory loc = postIndex[_postId];
+        return allPosts[loc.index];
+    }
+
+    function getPostsByUser(uint userId) external view returns (Post[] memory){
+        require(userPosts[userId][0]!= 0, "user doesn't own any post");
+        Post[] memory tempUserPosts;
+
+        for(uint index; index < userPosts[userId].length; index++){
+                    tempUserPosts[index] = allPosts[userPosts[userId][index]];
+        }
+
+        return tempUserPosts;
+    }
+
     function _postExists(uint postId) internal view returns (bool){
         if(postIndex[postId].ownerId != 0 ) return true;
         else return false;
@@ -110,11 +127,14 @@ contract PostManager {
         allPosts[loc.index].description = _description;
     }
 
+    // -- COMMENT Functionalites //
+
     function commentOnPost(string calldata _comment, uint _postId) external {
         uint commenterId = profileManager.getProfileId(msg.sender);
 
+        require(_postExists(_postId), "Post does not exist");
+
         PostLocation memory loc = postIndex[_postId];
-        require(loc.ownerId != 0, "Post does not exist");
 
         uint index = loc.index;
 
@@ -129,22 +149,31 @@ contract PostManager {
         allPosts[index].comments.push(newComment);
     }
 
+
+    //--  LIKE Functionalities --//
+
     function togglePostLike(uint _postId) external {
         uint userId = profileManager.getProfileId(msg.sender);
 
-        PostLocation memory loc = postIndex[_postId];
         require(_postExists(_postId), "Post doesn't exist");
+        PostLocation memory loc = postIndex[_postId];
 
-        if(likes[userId]){
-            delete likes[userId] ;
+        if(likes[userId] == 1){
+            likes[userId] = 0;
             --allPosts[loc.index].like;
         }
-        
-        else {likes[userId] = true;
+
+        else {
+            likes[userId] = 1;
             ++allPosts[loc.index].like;
         }
 
     }
 
-
+    function getPostLikeCount(uint _postId) external view returns (uint){
+        require(_postExists(_postId), "Post doesn't exist");  
+        PostLocation memory loc = postIndex[_postId];
+        
+       return allPosts[loc.index].like;
+    }
 }
