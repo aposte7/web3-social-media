@@ -15,10 +15,8 @@ contract PostManager {
     }
 
 
-    struct Like {
-        uint userId;
-        uint createdAt;
-    }
+    
+
 
     struct Comment {
         uint commentId;
@@ -31,8 +29,8 @@ contract PostManager {
     struct Post { 
         uint ownerId;
         uint postId;
+        uint like;
         string description;
-        Like[] likes;
         Comment[] comments;
         uint createdAt;
     }
@@ -41,6 +39,8 @@ contract PostManager {
         uint ownerId;     
         uint index;        
     }
+
+    mapping(uint userId => bool ) likes;
 
     mapping(uint userId => uint[] userPostsIndex) public userPosts; 
    
@@ -99,6 +99,17 @@ contract PostManager {
         userPosts[loc.ownerId].pop();
     }
 
+    function editPost(uint _postId, string calldata _description) external {
+        uint userId = profileManager.getProfileId(msg.sender);
+
+        PostLocation memory loc = postIndex[_postId];
+
+        require(loc.ownerId == userId, "you don't have this post");
+        require(_postExists(_postId), "Post doesn't exist");
+
+        allPosts[loc.index].description = _description;
+    }
+
     function commentOnPost(string calldata _comment, uint _postId) external {
         uint commenterId = profileManager.getProfileId(msg.sender);
 
@@ -116,6 +127,23 @@ contract PostManager {
         });
 
         allPosts[index].comments.push(newComment);
+    }
+
+    function togglePostLike(uint _postId) external {
+        uint userId = profileManager.getProfileId(msg.sender);
+
+        PostLocation memory loc = postIndex[_postId];
+        require(_postExists(_postId), "Post doesn't exist");
+
+        if(likes[userId]){
+            delete likes[userId] ;
+            --allPosts[loc.index].like;
+        }
+        
+        else {likes[userId] = true;
+            ++allPosts[loc.index].like;
+        }
+
     }
 
 
