@@ -26,7 +26,6 @@ contract PostManager {
     struct Post { 
         uint ownerId;
         uint postId;
-        uint like;
         string description;
         Comment[] comments;
         uint createdAt;
@@ -37,13 +36,15 @@ contract PostManager {
         uint index;        
     }
 
-    mapping(uint userId => uint postId ) likes;
 
     mapping(uint userId => uint[] userPostsIndex) public userPosts; 
+    mapping(uint postId => PostLocation PostLocationStruct) public postIndex;
+    mapping(uint postId => mapping(uint userId => bool)) private postLikes;
+    mapping(uint postId => uint) private postLikeCount;
+
    
     Post[] public allPosts;
 
-    mapping(uint postId => PostLocation PostLocationStruct) public postIndex;
 
     event PostCreated(uint postId, uint ownerId, string description, uint createdAt);
 
@@ -71,7 +72,7 @@ contract PostManager {
     }
 
 
-    function getAllPosts() external view returns (Post[] memory) {
+    function getAllPosts() internal view returns (Post[] memory) {
         return allPosts;
     }
 
@@ -179,26 +180,27 @@ contract PostManager {
 
     function togglePostLike(uint _postId) external {
         uint userId = profileManager.getProfileId(msg.sender);
-
         require(_postExists(_postId), "Post doesn't exist");
-        PostLocation memory loc = postIndex[_postId];
 
-        if(likes[userId] == _postId){
-            delete likes[userId];
-            --allPosts[loc.index].like;
+        if (postLikes[_postId][userId]) {
+            postLikes[_postId][userId] = false;
+            postLikeCount[_postId]--;
+        } else {
+            postLikes[_postId][userId] = true;
+            postLikeCount[_postId]++;
         }
-
-        else {
-            likes[userId] = _postId;
-            ++allPosts[loc.index].like;
-        }
-
     }
 
-    function getPostLikeCount(uint _postId) external view returns (uint){
-        require(_postExists(_postId), "Post doesn't exist");  
-        PostLocation memory loc = postIndex[_postId];
-        
-       return allPosts[loc.index].like;
+
+    function getPostLikeCount(uint _postId) external view returns (uint) {
+        require(_postExists(_postId), "Post doesn't exist");
+        return postLikeCount[_postId];
     }
+
+    function hasUserLikedPost(uint _postId, uint _userId) external view returns (bool) {
+        require(_postExists(_postId), "Post doesn't exist");
+        return postLikes[_postId][_userId];
+    }
+
+
 }
