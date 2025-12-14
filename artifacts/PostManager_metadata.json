@@ -422,11 +422,11 @@
 	},
 	"sources": {
 		"contracts/PostManager.sol": {
-			"keccak256": "0x39dfa22f21924d58b591b645ab80da2ec780c585855bf9ce10dbacbdb88d13e2",
+			"keccak256": "0xcf7f482c0301d7900ebd2ab91c65b634d0008f34ebf72550e5e11aee4cd15d0d",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://89e1bace6d527c9281d8e791bc1104cadbecab98f3040a8a849b3efead12efcd",
-				"dweb:/ipfs/QmbHn9nkTB8vZnCWCAzchXcz5cguXDDrcFAFhH7CbGiedf"
+				"bzz-raw://971ca2ed5fd86182268d7212349de07236c31d9dfbbdc5f8ae12b3ffca71289d",
+				"dweb:/ipfs/QmTkmWPGssf4yc4n9QndxQBiag6JVGNPdrg9osKe6rtEJ9"
 			]
 		},
 		"contracts/ProfileManager.sol": {

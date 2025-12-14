@@ -6,7 +6,7 @@ import {ProfileManager} from "./ProfileManager.sol";
 contract PostManager {
 
     uint private postIdCount;
-    uint private commentIdIdCount;
+    uint private commentIdCount;
 
     ProfileManager profileManager;
 
@@ -50,6 +50,9 @@ contract PostManager {
 
 
     function createPost(string calldata _description) external {
+
+        require(bytes(_description).length < 30, "description should be atleast letter 3");
+
         uint ownerId = profileManager.getProfileId(msg.sender);
 
         postIdCount++;
@@ -83,7 +86,6 @@ contract PostManager {
     }
 
     function getPostsByUser(uint userId) external view returns (Post[] memory) {
-        require(userPosts[userId].length > 0, "User doesn't own any posts");
 
         uint[] memory userPostIndices = userPosts[userId];
         Post[] memory tempUserPosts = new Post[](userPostIndices.length);
@@ -165,7 +167,7 @@ contract PostManager {
         uint index = loc.index;
 
         Comment memory newComment = Comment({
-            commentId: ++commentIdIdCount,
+            commentId: ++commentIdCount,
             postId: _postId,
             userId: commenterId,
             comment: _comment,
