@@ -6,7 +6,7 @@ import {ProfileManager} from "./ProfileManager.sol";
 contract PostManager {
 
     uint private postIdCount;
-    uint private commentIdCount;
+    uint private commentIdCounter;
 
     ProfileManager profileManager;
 
@@ -18,16 +18,15 @@ contract PostManager {
     struct Comment {
         uint commentId;
         uint postId;
-        uint userId;
-        string comment;
+        uint authorId;
+        string content;
         uint createdAt;
     }
 
     struct Post { 
         uint ownerId;
         uint postId;
-        string description;
-        Comment[] comments;
+        string content;
         uint createdAt;
     }
 
@@ -37,21 +36,19 @@ contract PostManager {
     }
 
 
-    mapping(uint userId => uint[] userPostsIndex) public userPosts; 
-    mapping(uint postId => PostLocation PostLocationStruct) public postIndex;
-    mapping(uint postId => mapping(uint userId => bool)) private postLikes;
-    mapping(uint postId => uint) private postLikeCount;
+    mapping(uint256 userId => uint256[] userPostsIndex) private userPosts; 
+    mapping(uint256 postId => PostLocation PostLocationStruct) private postIndex;
+    mapping(uint256 postId => mapping(uint256 userId => bool)) private postLikes;
+    mapping(uint256 postId => uint) private postLikeCount;
+    mapping(uint256 commentId => Comment) private comments; 
+    mapping(uint256 postId => uint256[] commentId) private postComments; 
 
-   
-    Post[] public allPosts;
+    Post[] private allPosts;
+    event PostCreated(uint postId, uint ownerId, string content, uint createdAt);
 
+    function createPost(string calldata _content) external {
 
-    event PostCreated(uint postId, uint ownerId, string description, uint createdAt);
-
-
-    function createPost(string calldata _description) external {
-
-        require(bytes(_description).length < 30, "description should be atleast letter 3");
+        require(bytes(_content).length >  3, "content should be atleast letter 3");
 
         uint ownerId = profileManager.getProfileId(msg.sender);
 
@@ -64,17 +61,18 @@ contract PostManager {
 
         newPost.ownerId = ownerId;
         newPost.postId = newPostId;
-        newPost.description = _description;
+        newPost.content = _content;
         newPost.createdAt = block.timestamp;
 
         userPosts[ownerId].push(index);
 
         postIndex[newPostId] = PostLocation(ownerId, index);
 
-        emit PostCreated(newPostId, ownerId, _description, block.timestamp);
+        emit PostCreated(newPostId, ownerId, _content, block.timestamp);
     }
 
 
+    // Reminder forself the should impelment pagination and be external function
     function getAllPosts() internal view returns (Post[] memory) {
         return allPosts;
     }
@@ -144,39 +142,42 @@ contract PostManager {
     }
 
 
-    function editPost(uint _postId, string calldata _description) external {
+    function editPost(uint _postId, string calldata _content) external {
         uint userId = profileManager.getProfileId(msg.sender);
-
         require(_postExists(_postId), "Post doesn't exist");
-
         PostLocation memory loc = postIndex[_postId];
         require(loc.ownerId == userId, "you don't have this post");
+        require(bytes(_content).length >  3, "content should be atleast letter 3");
 
-        allPosts[loc.index].description = _description;
+
+        allPosts[loc.index].content = _content;
     }
+    
 
     // -- COMMENT Functionalites //
-
-    function commentOnPost(string calldata _comment, uint _postId) external {
-        uint commenterId = profileManager.getProfileId(msg.sender);
-
+    function commentOnPost(uint256 _postId, string calldata _content) external {
+        uint256 authorId = profileManager.getProfileId(msg.sender);
         require(_postExists(_postId), "Post does not exist");
+        require(bytes(_content).length > 0, "Empty comment");
 
-        PostLocation memory loc = postIndex[_postId];
+        commentIdCounter++;
+        uint256 newCommentId = commentIdCounter;
 
-        uint index = loc.index;
-
-        Comment memory newComment = Comment({
-            commentId: ++commentIdCount,
+        comments[newCommentId] = Comment({
+            commentId: newCommentId,
             postId: _postId,
-            userId: commenterId,
-            comment: _comment,
+            authorId: authorId,
+            content: _content,
             createdAt: block.timestamp
         });
 
-        allPosts[index].comments.push(newComment);
+        postComments[_postId].push(newCommentId);
     }
 
+    function getPostCommentCount(uint256 _postId) external view returns (uint256) {
+        require(_postExists(_postId), "Post does not exist");
+        return postComments[_postId].length;
+    }
 
     //--  LIKE Functionalities --//
 
