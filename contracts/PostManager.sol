@@ -15,9 +15,6 @@ contract PostManager {
     }
 
 
-    
-
-
     struct Comment {
         uint commentId;
         uint postId;
@@ -84,12 +81,14 @@ contract PostManager {
         return allPosts[loc.index];
     }
 
-    function getPostsByUser(uint userId) external view returns (Post[] memory){
-        require(userPosts[userId][0]!= 0, "user doesn't own any post");
-        Post[] memory tempUserPosts;
+    function getPostsByUser(uint userId) external view returns (Post[] memory) {
+        require(userPosts[userId].length > 0, "User doesn't own any posts");
 
-        for(uint index; index < userPosts[userId].length; index++){
-                    tempUserPosts[index] = allPosts[userPosts[userId][index]];
+        uint[] memory userPostIndices = userPosts[userId];
+        Post[] memory tempUserPosts = new Post[](userPostIndices.length);
+
+        for (uint i = 0; i < userPostIndices.length; i++) {
+            tempUserPosts[i] = allPosts[userPostIndices[i]];
         }
 
         return tempUserPosts;
@@ -100,29 +99,55 @@ contract PostManager {
         else return false;
     }
 
-    function deletePost(uint _postId) external{
-        // check if the post exist and the user ownes it.
+    function deletePost(uint _postId) external {
         uint userId = profileManager.getProfileId(msg.sender);
 
+        require(_postExists(_postId), "Post does not exist");
+
         PostLocation memory loc = postIndex[_postId];
+        require(loc.ownerId == userId, "You do not own this post");
 
-        require(loc.ownerId == userId, "you don't have this post");
-        require(_postExists(_postId), "Post doesn't exist");
+        uint postArrayIndex = loc.index;
+        uint lastPostIndex = allPosts.length - 1;
 
-        delete allPosts[loc.index];
+        if (postArrayIndex != lastPostIndex) {
+            Post storage lastPost = allPosts[lastPostIndex];
+
+            allPosts[postArrayIndex] = lastPost;
+
+            postIndex[lastPost.postId].index = postArrayIndex;
+
+            uint[] storage ownerPosts = userPosts[lastPost.ownerId];
+            for (uint i = 0; i < ownerPosts.length; i++) {
+                if (ownerPosts[i] == lastPostIndex) {
+                    ownerPosts[i] = postArrayIndex;
+                    break;
+                }
+            }
+        }
+
+        allPosts.pop();
+
+        uint[] storage postsOfUser = userPosts[userId];
+        for (uint i = 0; i < postsOfUser.length; i++) {
+            if (postsOfUser[i] == postArrayIndex) {
+                postsOfUser[i] = postsOfUser[postsOfUser.length - 1];
+                postsOfUser.pop();
+                break;
+            }
+        }
+
         delete postIndex[_postId];
-
-        userPosts[loc.ownerId][_postId] = userPosts[loc.ownerId][userPosts[loc.ownerId].length - 1];
-        userPosts[loc.ownerId].pop();
     }
+
 
     function editPost(uint _postId, string calldata _description) external {
         uint userId = profileManager.getProfileId(msg.sender);
 
-        PostLocation memory loc = postIndex[_postId];
-
-        require(loc.ownerId == userId, "you don't have this post");
         require(_postExists(_postId), "Post doesn't exist");
+
+        PostLocation memory loc = postIndex[_postId];
+        require(loc.ownerId == userId, "you don't have this post");
 
         allPosts[loc.index].description = _description;
     }
@@ -158,13 +183,13 @@ contract PostManager {
         require(_postExists(_postId), "Post doesn't exist");
         PostLocation memory loc = postIndex[_postId];
 
-        if(likes[userId] == 1){
-            likes[userId] = 0;
+        if(likes[userId] == _postId){
+            delete likes[userId];
             --allPosts[loc.index].like;
         }
 
         else {
-            likes[userId] = 1;
+            likes[userId] = _postId;
             ++allPosts[loc.index].like;
         }
 

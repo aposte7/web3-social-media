@@ -485,11 +485,11 @@
 	},
 	"sources": {
 		"contracts/PostManager.sol": {
-			"keccak256": "0xf66a521ff386dcee93bbe552e7b28f59010c6863c418e3649140402c89dc26a6",
+			"keccak256": "0x1c64a2ec2f38303cc7f8a93a9697942733aa1c209ce5728935bd783aae9ed5b8",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://37fdbe4a4502706fe65998711fb69fba690ec9309727809d05c1df91b87a0eed",
-				"dweb:/ipfs/Qmf5JGYTttZWmhKoeDhXF373dAMeSsAsNzS9UdPMBpZsNb"
+				"bzz-raw://ed6a834060555b053530eba9079a9e4103457becf2370edb49f464a455d396d0",
+				"dweb:/ipfs/QmWuec45Hsupf5LsML57qUaYDJJiGC119KY1eu1azSsfMD"
 			]
 		},
 		"contracts/ProfileManager.sol": {
