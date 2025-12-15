@@ -115,6 +115,62 @@
 						"internalType": "uint256",
 						"name": "_postId",
 						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_offset",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_limit",
+						"type": "uint256"
+					}
+				],
+				"name": "getCommentsByPost",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "commentId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "postId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "authorId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "content",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "createdAt",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct PostManager.Comment[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_postId",
+						"type": "uint256"
 					}
 				],
 				"name": "getPostById",
@@ -295,11 +351,11 @@
 	},
 	"sources": {
 		"contracts/PostManager.sol": {
-			"keccak256": "0x0d6af9090a3993d51e3704762c69586e64b37350c5769897c193f9fff3cf05f9",
+			"keccak256": "0x795c8c33cf89ffe01a7da4583f308852f67a51f44e1d283fd812dd95942ef5c0",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://74bb6f306a86435612ad684615325bfb292eb8907644443f324c0481f1509fb4",
-				"dweb:/ipfs/QmNh4qMjRPL8cpfUcAQMmuD6xdKNKt84i2n2BpRNSqcnF6"
+				"bzz-raw://e0659ea660dd9708bf4e40989e56ec8844ed1d593d603dce7d1d3857771de08f",
+				"dweb:/ipfs/QmXgrqX8cVQR9zc31Lhnz46hzVBrkFrzXJoBDFRzvj4HNj"
 			]
 		},
 		"contracts/ProfileManager.sol": {

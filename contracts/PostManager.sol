@@ -28,6 +28,7 @@ contract PostManager {
         uint postId;
         string content;
         uint createdAt;
+        bool isDeleted;
     }
 
     struct PostLocation {
@@ -72,10 +73,6 @@ contract PostManager {
     }
 
 
-    // Reminder forself the should impelment pagination and be external function
-    function getAllPosts() internal view returns (Post[] memory) {
-        return allPosts;
-    }
 
     function getPostById(uint _postId) external view returns(Post memory){
         require(_postExists(_postId), "Post doesn't exist");
@@ -98,6 +95,10 @@ contract PostManager {
     function _postExists(uint postId) internal view returns (bool){
         if(postIndex[postId].ownerId != 0 ) return true;
         else return false;
+    }
+
+    function getTotalPostCount() external view returns (uint256) {
+        return allPosts.length;
     }
 
     function deletePost(uint _postId) external {
@@ -152,7 +153,7 @@ contract PostManager {
 
         allPosts[loc.index].content = _content;
     }
-    
+
 
     // -- COMMENT Functionalites //
     function commentOnPost(uint256 _postId, string calldata _content) external {
@@ -173,6 +174,34 @@ contract PostManager {
 
         postComments[_postId].push(newCommentId);
     }
+
+    function getCommentsByPost(uint256 _postId, uint256 _offset, uint256 _limit) external view returns (Comment[] memory) {
+        require(_postExists(_postId), "Post does not exist");
+
+        uint256 totalComments = postComments[_postId].length;
+
+        if (_offset >= totalComments) {
+            return new Comment[](0);
+        }
+
+        uint256 end = _offset + _limit;
+        if (end > totalComments) {
+            end = totalComments;
+        }
+
+        uint256 resultSize = end - _offset;
+        Comment[] memory paginatedComments = new Comment[](resultSize);
+
+        uint256 index = 0;
+        for (uint256 i = _offset; i < end; i++) {
+            uint256 commentId = postComments[_postId][i];
+            paginatedComments[index] = comments[commentId];
+            index++;
+        }
+
+        return paginatedComments;
+    }
+
 
     function getPostCommentCount(uint256 _postId) external view returns (uint256) {
         require(_postExists(_postId), "Post does not exist");
