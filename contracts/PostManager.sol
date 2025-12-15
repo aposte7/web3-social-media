@@ -21,6 +21,7 @@ contract PostManager {
         uint authorId;
         string content;
         uint createdAt;
+        bool isDeleted;
     }
 
     struct Post { 
@@ -45,7 +46,9 @@ contract PostManager {
     mapping(uint256 postId => uint256[] commentId) private postComments; 
 
     Post[] private allPosts;
-    event PostCreated(uint postId, uint ownerId, string content, uint createdAt);
+
+    event PostCreated(uint indexed postId, uint indexed ownerId, string content, uint createdAt);
+
 
     function createPost(string calldata _content) external {
 
@@ -93,7 +96,7 @@ contract PostManager {
     }
 
     function _postExists(uint postId) internal view returns (bool){
-        if(postIndex[postId].ownerId != 0 ) return true;
+        if(postIndex[postId].ownerId != 0 && !_isPostDeleted(postId)) return true;
         else return false;
     }
 
@@ -113,6 +116,11 @@ contract PostManager {
 
         post.isDeleted = true;
 
+    }
+
+    function _isPostDeleted(uint256 _postId) internal view returns(bool){
+        PostLocation memory loc = postIndex[_postId];
+        return allPosts[loc.index].isDeleted;
     }
 
     function editPost(uint _postId, string calldata _content) external {
@@ -141,10 +149,31 @@ contract PostManager {
             postId: _postId,
             authorId: authorId,
             content: _content,
-            createdAt: block.timestamp
+            createdAt: block.timestamp,
+            isDeleted: false
         });
 
         postComments[_postId].push(newCommentId);
+    }
+
+    function editComment(uint256 _commentId, string calldata newContent) external {
+        uint256 userId = profileManager.getProfileId(msg.sender);
+        uint256 authorId = comments[_commentId].authorId;
+        require(userId == authorId, "You don't own this comment");
+        Comment storage comment =   comments[_commentId];
+        require(!comment.isDeleted, "Comment does not exsist");
+
+        comment.content = newContent;
+    }
+
+    function deleteComment(uint256 _commentId) external {
+        uint256 userId = profileManager.getProfileId(msg.sender);
+        uint256 authorId = comments[_commentId].authorId;
+        require(userId == authorId, "You don't own this comment");
+        Comment storage comment =   comments[_commentId];
+        require(!comment.isDeleted, "Comment does not exsist");
+
+        comment.isDeleted = true;         
     }
 
     function getCommentsByPost(uint256 _postId, uint256 _offset, uint256 _limit) external view returns (Comment[] memory) {
