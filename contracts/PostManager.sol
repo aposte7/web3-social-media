@@ -47,13 +47,20 @@ contract PostManager {
 
     Post[] private allPosts;
 
-    event PostCreated(uint indexed postId, uint indexed ownerId, string content, uint createdAt);
+    event PostCreated( uint indexed postId, uint indexed ownerId, address indexed ownerAddress, string content, uint createdAt);
+    event PostEdited( uint indexed postId, string newContent, uint editedAt);
+    event PostDeleted( uint indexed postId, uint deletedAt);
+    event PostLiked( uint indexed postId, uint indexed userId, address indexed userAddress, uint createdAt);
+    event PostUnliked( uint indexed postId, uint indexed userId, address indexed userAddress, uint removedAt);
+    event CommentCreated( uint indexed commentId, uint indexed postId, uint indexed authorId, address authorAddress, string content, uint createdAt);
+    event CommentEdited( uint indexed commentId, string newContent, uint editedAt);
+    event CommentDeleted( uint indexed commentId, uint deletedAt);
+
 
 
     function createPost(string calldata _content) external {
 
         require(bytes(_content).length >  3, "content should be atleast letter 3");
-
         uint ownerId = profileManager.getProfileId(msg.sender);
 
         postIdCount++;
@@ -67,15 +74,11 @@ contract PostManager {
         newPost.postId = newPostId;
         newPost.content = _content;
         newPost.createdAt = block.timestamp;
-
         userPosts[ownerId].push(index);
-
         postIndex[newPostId] = PostLocation(ownerId, index);
 
-        emit PostCreated(newPostId, ownerId, _content, block.timestamp);
+        emit PostCreated(newPostId, ownerId, msg.sender, _content,  newPost.createdAt);
     }
-
-
 
     function getPostById(uint _postId) external view returns(Post memory){
         require(_postExists(_postId), "Post doesn't exist");
@@ -113,8 +116,8 @@ contract PostManager {
 
         Post storage post = allPosts[loc.index];
         require(!post.isDeleted, "Already deleted");
-
         post.isDeleted = true;
+        emit PostDeleted(_postId, block.timestamp);
 
     }
 
@@ -123,15 +126,15 @@ contract PostManager {
         return allPosts[loc.index].isDeleted;
     }
 
-    function editPost(uint _postId, string calldata _content) external {
+    function editPost(uint _postId, string calldata newContent) external {
         uint userId = profileManager.getProfileId(msg.sender);
         require(_postExists(_postId), "Post doesn't exist");
         PostLocation memory loc = postIndex[_postId];
         require(loc.ownerId == userId, "you don't have this post");
-        require(bytes(_content).length >  3, "content should be atleast letter 3");
+        require(bytes(newContent).length >  3, "content should be atleast letter 3");
+        allPosts[loc.index].content = newContent;
 
-
-        allPosts[loc.index].content = _content;
+        emit PostEdited(_postId, newContent, block.timestamp);
     }
 
 
@@ -154,6 +157,7 @@ contract PostManager {
         });
 
         postComments[_postId].push(newCommentId);
+        emit CommentCreated(newCommentId, _postId, authorId, msg.sender, _content, comments[newCommentId].createdAt);
     }
 
     function editComment(uint256 _commentId, string calldata newContent) external {
@@ -164,6 +168,8 @@ contract PostManager {
         require(!comment.isDeleted, "Comment does not exsist");
 
         comment.content = newContent;
+
+        emit CommentEdited(_commentId, newContent, block.timestamp);
     }
 
     function deleteComment(uint256 _commentId) external {
@@ -173,7 +179,8 @@ contract PostManager {
         Comment storage comment =   comments[_commentId];
         require(!comment.isDeleted, "Comment does not exsist");
 
-        comment.isDeleted = true;         
+        comment.isDeleted = true;      
+        emit CommentDeleted(_commentId, block.timestamp);   
     }
 
     function getCommentsByPost(uint256 _postId, uint256 _offset, uint256 _limit) external view returns (Comment[] memory) {
@@ -218,9 +225,11 @@ contract PostManager {
         if (postLikes[_postId][userId]) {
             postLikes[_postId][userId] = false;
             postLikeCount[_postId]--;
+            emit PostUnliked(_postId, userId, msg.sender , block.timestamp);
         } else {
             postLikes[_postId][userId] = true;
             postLikeCount[_postId]++;
+             emit PostLiked(_postId, userId, msg.sender , block.timestamp);
         }
     }
 
