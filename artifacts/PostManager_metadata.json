@@ -196,6 +196,11 @@
 								"internalType": "uint256",
 								"name": "createdAt",
 								"type": "uint256"
+							},
+							{
+								"internalType": "bool",
+								"name": "isDeleted",
+								"type": "bool"
 							}
 						],
 						"internalType": "struct PostManager.Post",
@@ -275,11 +280,29 @@
 								"internalType": "uint256",
 								"name": "createdAt",
 								"type": "uint256"
+							},
+							{
+								"internalType": "bool",
+								"name": "isDeleted",
+								"type": "bool"
 							}
 						],
 						"internalType": "struct PostManager.Post[]",
 						"name": "",
 						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getTotalPostCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -351,11 +374,11 @@
 	},
 	"sources": {
 		"contracts/PostManager.sol": {
-			"keccak256": "0x795c8c33cf89ffe01a7da4583f308852f67a51f44e1d283fd812dd95942ef5c0",
+			"keccak256": "0x9ed79701547707c4f6f8005598463b7290b8b3af6983fb8a51d5a30cdc69dd2c",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://e0659ea660dd9708bf4e40989e56ec8844ed1d593d603dce7d1d3857771de08f",
-				"dweb:/ipfs/QmXgrqX8cVQR9zc31Lhnz46hzVBrkFrzXJoBDFRzvj4HNj"
+				"bzz-raw://6bdae5b6981fa0c363d7dc2e5eb0fee648882d45b5d868ab55dc9b75011af6e6",
+				"dweb:/ipfs/Qme4ucUCcK7DgPx7doauZkxRrwyCyhy92MrBmLcyY8pz1j"
 			]
 		},
 		"contracts/ProfileManager.sol": {

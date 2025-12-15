@@ -103,45 +103,17 @@ contract PostManager {
 
     function deletePost(uint _postId) external {
         uint userId = profileManager.getProfileId(msg.sender);
-
         require(_postExists(_postId), "Post does not exist");
 
         PostLocation memory loc = postIndex[_postId];
-        require(loc.ownerId == userId, "You do not own this post");
+        require(loc.ownerId == userId, "Not post owner");
 
-        uint postArrayIndex = loc.index;
-        uint lastPostIndex = allPosts.length - 1;
+        Post storage post = allPosts[loc.index];
+        require(!post.isDeleted, "Already deleted");
 
-        if (postArrayIndex != lastPostIndex) {
-            Post storage lastPost = allPosts[lastPostIndex];
+        post.isDeleted = true;
 
-            allPosts[postArrayIndex] = lastPost;
-
-            postIndex[lastPost.postId].index = postArrayIndex;
-
-            uint[] storage ownerPosts = userPosts[lastPost.ownerId];
-            for (uint i = 0; i < ownerPosts.length; i++) {
-                if (ownerPosts[i] == lastPostIndex) {
-                    ownerPosts[i] = postArrayIndex;
-                    break;
-                }
-            }
-        }
-
-        allPosts.pop();
-
-        uint[] storage postsOfUser = userPosts[userId];
-        for (uint i = 0; i < postsOfUser.length; i++) {
-            if (postsOfUser[i] == postArrayIndex) {
-                postsOfUser[i] = postsOfUser[postsOfUser.length - 1];
-                postsOfUser.pop();
-                break;
-            }
-        }
-
-        delete postIndex[_postId];
     }
-
 
     function editPost(uint _postId, string calldata _content) external {
         uint userId = profileManager.getProfileId(msg.sender);
