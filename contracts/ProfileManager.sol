@@ -14,7 +14,7 @@ contract ProfileManager {
         uint256 createdAt;
     }
 
-    mapping(address userAddres => uint userIndex) private profileIndex;
+    mapping(address userAddress => uint userIndex) private profileIndexPlusOne;
     mapping(string => bool) private usernameTaken;
 
     Profile[] private profileList;
@@ -26,13 +26,14 @@ contract ProfileManager {
 
 
     modifier onlyProfileOwner() {
-        require(profileList[profileIndex[msg.sender]].id != 0, "Profile does not exist");
+        require(profileList[profileIndexPlusOne[msg.sender]].id != 0, "Profile does not exist");
         _;
     }
+   
 
   
     function createProfile(string calldata username,string calldata bio,string calldata avatarURI) external returns (Profile memory) {
-        require(profileList[profileIndex[msg.sender]].id == 0, "Profile already exists");
+        require(profileList[profileIndexPlusOne[msg.sender]].id == 0, "Profile already exists");
         require(bytes(username).length >= 3, "Username too short");
         require(usernameTaken[username] == false, "Username already taken");
 
@@ -50,7 +51,7 @@ contract ProfileManager {
 
 
         profileList.push(newProfile);
-        profileIndex[msg.sender] = profileList.length -1;
+        profileIndexPlusOne[msg.sender] = profileList.length;
         usernameTaken[username] = true;
 
         emit ProfileCreated(_profileCounter, msg.sender, username, bio, avatarURI, block.timestamp);
@@ -61,7 +62,7 @@ contract ProfileManager {
 
     function updateProfile(string calldata newUsername,string calldata newBio,string calldata newAvatarURI) external onlyProfileOwner returns (Profile memory) {
 
-        Profile storage user = profileList[profileIndex[msg.sender]];
+        Profile storage user = profileList[profileIndexPlusOne[msg.sender] - 1];
 
         if (keccak256(bytes(newUsername)) != keccak256(bytes(user.username))) {
             require(bytes(newUsername).length >= 3, "Username too short");
@@ -82,21 +83,21 @@ contract ProfileManager {
 
 
     function getProfileId(address _address) public view returns(uint){
-        require(profileList[profileIndex[_address]].id !=0, "Profile not found" );
+        require(profileList[profileIndexPlusOne[_address]].id !=0, "Profile not found" );
 
-        return profileList[profileIndex[_address]].id;
+        return profileList[profileIndexPlusOne[_address] - 1].id;
     }
 
 
     function getProfile(address userAddress) external view returns (Profile memory) {
-        require(profileList[profileIndex[userAddress]].id != 0, "Profile not found");
+        require(profileList[profileIndexPlusOne[userAddress]].id != 0, "Profile not found");
         
-        return profileList[profileIndex[userAddress]];
+        return profileList[profileIndexPlusOne[userAddress]];
     }
 
     function getMyProfile() external view returns (Profile memory) {
-        require(profileList[profileIndex[msg.sender]].id != 0, "Profile not found");
-        return profileList[profileIndex[msg.sender]];
+        require(profileList[profileIndexPlusOne[msg.sender]].id != 0, "Profile not found");
+        return profileList[profileIndexPlusOne[msg.sender]];
     }
 
     function getAllProfiles() external view returns (Profile[] memory) {
