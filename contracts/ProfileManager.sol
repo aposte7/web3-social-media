@@ -12,29 +12,16 @@ contract ProfileManager {
         string avatarURI;      
         address owner;
         uint256 createdAt;
-        uint256 updatedAt;
     }
 
     mapping(address userAddres => uint userIndex) private profileIndex;
-
     mapping(string => bool) private usernameTaken;
 
     Profile[] private profileList;
 
 
-
-    event ProfileCreated(
-        uint256 indexed id,
-        address indexed owner,
-        string username,
-        uint256 timestamp
-    );
-
-    event ProfileUpdated(
-        uint256 indexed id,
-        address indexed owner,
-        uint256 timestamp
-    );
+    event ProfileCreated( uint256 indexed profileId, address indexed owner, string username,  string bio, string avatarURI, uint256 createdAt);
+    event ProfileUpdated( uint256 indexed profileId, uint256 updatedAt);
 
 
 
@@ -44,12 +31,7 @@ contract ProfileManager {
     }
 
   
-    function createProfile(
-        string calldata username,
-        string calldata bio,
-        string calldata avatarURI
-    ) external returns (Profile memory) {
-
+    function createProfile(string calldata username,string calldata bio,string calldata avatarURI) external returns (Profile memory) {
         require(profileList[profileIndex[msg.sender]].id == 0, "Profile already exists");
         require(bytes(username).length >= 3, "Username too short");
         require(usernameTaken[username] == false, "Username already taken");
@@ -63,28 +45,21 @@ contract ProfileManager {
             bio: bio,
             avatarURI: avatarURI,
             owner: msg.sender,
-            createdAt: block.timestamp,
-            updatedAt: block.timestamp
+            createdAt: block.timestamp
         });
 
 
         profileList.push(newProfile);
-
-        
         profileIndex[msg.sender] = profileList.length -1;
         usernameTaken[username] = true;
 
-        emit ProfileCreated(_profileCounter, msg.sender, username, block.timestamp);
+        emit ProfileCreated(_profileCounter, msg.sender, username, bio, avatarURI, block.timestamp);
 
         return newProfile;
     }
 
 
-    function updateProfile(
-        string calldata newUsername,
-        string calldata newBio,
-        string calldata newAvatarURI
-    ) external onlyProfileOwner returns (Profile memory) {
+    function updateProfile(string calldata newUsername,string calldata newBio,string calldata newAvatarURI) external onlyProfileOwner returns (Profile memory) {
 
         Profile storage user = profileList[profileIndex[msg.sender]];
 
@@ -94,15 +69,13 @@ contract ProfileManager {
 
             usernameTaken[user.username] = false;
             usernameTaken[newUsername] = true;
-
             user.username = newUsername;
         }
 
         user.bio = newBio;
         user.avatarURI = newAvatarURI;
-        user.updatedAt = block.timestamp;
 
-        emit ProfileUpdated(user.id, msg.sender, block.timestamp);
+        emit ProfileUpdated(user.id, block.timestamp);
 
         return user;
     }
