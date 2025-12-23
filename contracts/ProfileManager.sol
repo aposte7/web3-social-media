@@ -2,59 +2,60 @@
 pragma solidity ^0.8.20;
 
 contract ProfileManager {
-
-    uint256 private _profileCounter;
-
     struct Profile {
         uint256 id;
         string username;
         string bio;
-        string avatarURI;      
+        string avatarURI;
         address owner;
         uint256 createdAt;
+        uint256 updatedAt;
     }
 
-    mapping(address userAddress => uint userIndex) private profileIndexPlusOne;
+    mapping(address => Profile) private profiles;
+    mapping(address => bool) private hasProfile;
     mapping(string => bool) private usernameTaken;
+    address[] private profileOwners;
+    uint256 private profileCounter;
 
-    Profile[] private profileList;
 
+    event ProfileCreated(uint256 indexed profileId,address indexed owner,string username,uint256 createdAt
+    );
 
-    event ProfileCreated( uint256 indexed profileId, address indexed owner, string username,  string bio, string avatarURI, uint256 createdAt);
-    event ProfileUpdated( uint256 indexed profileId, uint256 updatedAt);
-
+    event ProfileUpdated(uint256 indexed profileId,uint256 updatedAt
+    );
 
 
     modifier onlyProfileOwner() {
-        require(profileList[profileIndexPlusOne[msg.sender]].id != 0, "Profile does not exist");
+        require(hasProfile[msg.sender], "Profile does not exist");
         _;
     }
-   
 
-  
+
     function createProfile(string calldata username,string calldata bio,string calldata avatarURI) external returns (Profile memory) {
-        require(profileList[profileIndexPlusOne[msg.sender]].id == 0, "Profile already exists");
+        require(!hasProfile[msg.sender], "Profile already exists");
         require(bytes(username).length >= 3, "Username too short");
-        require(usernameTaken[username] == false, "Username already taken");
+        require(!usernameTaken[username], "Username already taken");
 
-        _profileCounter++;
-
+        profileCounter++;
 
         Profile memory newProfile = Profile({
-            id: _profileCounter,
+            id: profileCounter,
             username: username,
             bio: bio,
             avatarURI: avatarURI,
             owner: msg.sender,
-            createdAt: block.timestamp
+            createdAt: block.timestamp,
+            updatedAt: block.timestamp
         });
 
-
-        profileList.push(newProfile);
-        profileIndexPlusOne[msg.sender] = profileList.length;
+        profiles[msg.sender] = newProfile;
+        hasProfile[msg.sender] = true;
         usernameTaken[username] = true;
+        profileOwners.push(msg.sender);
 
-        emit ProfileCreated(_profileCounter, msg.sender, username, bio, avatarURI, block.timestamp);
+        emit ProfileCreated(newProfile.id,msg.sender,username,block.timestamp
+        );
 
         return newProfile;
     }
@@ -62,11 +63,11 @@ contract ProfileManager {
 
     function updateProfile(string calldata newUsername,string calldata newBio,string calldata newAvatarURI) external onlyProfileOwner returns (Profile memory) {
 
-        Profile storage user = profileList[profileIndexPlusOne[msg.sender] - 1];
+        Profile storage user = profiles[msg.sender];
 
         if (keccak256(bytes(newUsername)) != keccak256(bytes(user.username))) {
             require(bytes(newUsername).length >= 3, "Username too short");
-            require(usernameTaken[newUsername] == false, "Username already taken");
+            require(!usernameTaken[newUsername], "Username already taken");
 
             usernameTaken[user.username] = false;
             usernameTaken[newUsername] = true;
@@ -75,6 +76,7 @@ contract ProfileManager {
 
         user.bio = newBio;
         user.avatarURI = newAvatarURI;
+        user.updatedAt = block.timestamp;
 
         emit ProfileUpdated(user.id, block.timestamp);
 
@@ -82,29 +84,37 @@ contract ProfileManager {
     }
 
 
-    function getProfileId(address _address) public view returns(uint){
-        require(profileList[profileIndexPlusOne[_address]].id !=0, "Profile not found" );
-
-        return profileList[profileIndexPlusOne[_address] - 1].id;
-    }
-
-
-    function getProfile(address userAddress) external view returns (Profile memory) {
-        require(profileList[profileIndexPlusOne[userAddress]].id != 0, "Profile not found");
-        
-        return profileList[profileIndexPlusOne[userAddress]];
+    function getProfile(address user) external view returns (Profile memory) {
+        require(hasProfile[user], "Profile not found");
+        return profiles[user];
     }
 
     function getMyProfile() external view returns (Profile memory) {
-        require(profileList[profileIndexPlusOne[msg.sender]].id != 0, "Profile not found");
-        return profileList[profileIndexPlusOne[msg.sender]];
+        require(hasProfile[msg.sender], "Profile not found");
+        return profiles[msg.sender];
     }
 
-    function getAllProfiles() external view returns (Profile[] memory) {
-        return profileList;
+    function getProfileId(address user) external view returns (uint256) {
+        require(hasProfile[user], "Profile not found");
+        return profiles[user].id;
     }
 
     function totalProfiles() external view returns (uint256) {
-        return _profileCounter;
+        return profileOwners.length;
+    }
+
+    function getAllProfiles() external view returns (Profile[] memory) {
+        uint256 count = profileOwners.length;
+        Profile[] memory list = new Profile[](count);
+
+        for (uint256 i = 0; i < count; i++) {
+            list[i] = profiles[profileOwners[i]];
+        }
+
+        return list;
+    }
+
+    function profileExists(address user) external view returns (bool) {
+        return hasProfile[user];
     }
 }

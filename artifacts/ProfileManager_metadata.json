@@ -28,18 +28,6 @@
 					},
 					{
 						"indexed": false,
-						"internalType": "string",
-						"name": "bio",
-						"type": "string"
-					},
-					{
-						"indexed": false,
-						"internalType": "string",
-						"name": "avatarURI",
-						"type": "string"
-					},
-					{
-						"indexed": false,
 						"internalType": "uint256",
 						"name": "createdAt",
 						"type": "uint256"
@@ -118,6 +106,11 @@
 								"internalType": "uint256",
 								"name": "createdAt",
 								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "updatedAt",
+								"type": "uint256"
 							}
 						],
 						"internalType": "struct ProfileManager.Profile",
@@ -162,6 +155,11 @@
 							{
 								"internalType": "uint256",
 								"name": "createdAt",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "updatedAt",
 								"type": "uint256"
 							}
 						],
@@ -208,6 +206,11 @@
 								"internalType": "uint256",
 								"name": "createdAt",
 								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "updatedAt",
+								"type": "uint256"
 							}
 						],
 						"internalType": "struct ProfileManager.Profile",
@@ -222,7 +225,7 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "userAddress",
+						"name": "user",
 						"type": "address"
 					}
 				],
@@ -259,6 +262,11 @@
 								"internalType": "uint256",
 								"name": "createdAt",
 								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "updatedAt",
+								"type": "uint256"
 							}
 						],
 						"internalType": "struct ProfileManager.Profile",
@@ -273,7 +281,7 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "_address",
+						"name": "user",
 						"type": "address"
 					}
 				],
@@ -283,6 +291,25 @@
 						"internalType": "uint256",
 						"name": "",
 						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					}
+				],
+				"name": "profileExists",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
 					}
 				],
 				"stateMutability": "view",
@@ -352,6 +379,11 @@
 								"internalType": "uint256",
 								"name": "createdAt",
 								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "updatedAt",
+								"type": "uint256"
 							}
 						],
 						"internalType": "struct ProfileManager.Profile",
@@ -391,11 +423,11 @@
 	},
 	"sources": {
 		"contracts/ProfileManager.sol": {
-			"keccak256": "0x4ee75acbd942b9c03e88f00612e17a40f2743c0bacbbefc3430409faf69a4ff2",
+			"keccak256": "0x961cc1fc869a77c0e274425fea2eff55698f9d0944176a5a9afee3dce358b0e0",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://bb994650c6f54fe0a4baa5155d3b1db239ba3f31b494fa15b0e4607b763d110d",
-				"dweb:/ipfs/QmXvXQwLihX1tPbt4Hej37dyGMgGmiFhWUTVgnm8oFzjTK"
+				"bzz-raw://274529dade53c1ef7e36f57082adce1f7f2884e80bf1cb7e13ea9082d1452133",
+				"dweb:/ipfs/QmSdP78t11YPzDLZaAsUEH1amAh3y7cEAmr7AbCXw2ooG2"
 			]
 		}
 	},
