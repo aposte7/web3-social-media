@@ -1,5 +1,7 @@
 # Web3 Social Media Contracts
 
+![Project Screenshot](screenshots/image.png)
+
 Smart contracts for a minimal on-chain social media protocol built on Ethereum-compatible networks. The system is split into two core contracts:
 
 -   `ProfileManager`: Handles user profiles and usernames.
