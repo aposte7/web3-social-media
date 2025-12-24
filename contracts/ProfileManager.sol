@@ -18,6 +18,12 @@ contract ProfileManager {
     address[] private profileOwners;
     uint256 private profileCounter;
 
+    address private immutable owner;
+
+    constructor() {
+        owner = msg.sender;
+    }
+
 
     event ProfileCreated(uint256 indexed profileId,address indexed owner,string username,uint256 createdAt
     );
@@ -28,6 +34,10 @@ contract ProfileManager {
 
     modifier onlyProfileOwner() {
         require(hasProfile[msg.sender], "Profile does not exist");
+        _;
+    }
+    modifier onlyOwner() {
+        require(owner == msg.sender, "Only Owner is allowed");
         _;
     }
 
@@ -89,21 +99,21 @@ contract ProfileManager {
         return profiles[user];
     }
 
-    function getMyProfile() external view returns (Profile memory) {
+    function getMyProfile() external view onlyProfileOwner returns (Profile memory) {
         require(hasProfile[msg.sender], "Profile not found");
         return profiles[msg.sender];
     }
 
-    function getProfileId(address user) external view returns (uint256) {
-        require(hasProfile[user], "Profile not found");
-        return profiles[user].id;
+    function getProfileId(address userAddress) external view returns (uint256) {
+        require(hasProfile[userAddress], "Profile not found");
+        return profiles[userAddress].id;
     }
 
-    function totalProfiles() external view returns (uint256) {
+    function totalProfiles() external view onlyOwner returns (uint256) {
         return profileOwners.length;
     }
 
-    function getAllProfiles() external view returns (Profile[] memory) {
+    function getAllProfiles() external view onlyOwner returns (Profile[] memory) {
         uint256 count = profileOwners.length;
         Profile[] memory list = new Profile[](count);
 

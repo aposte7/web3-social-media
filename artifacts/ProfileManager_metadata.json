@@ -6,6 +6,11 @@
 	"output": {
 		"abi": [
 			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
 				"anonymous": false,
 				"inputs": [
 					{
@@ -281,7 +286,7 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "user",
+						"name": "userAddress",
 						"type": "address"
 					}
 				],
@@ -423,11 +428,11 @@
 	},
 	"sources": {
 		"contracts/ProfileManager.sol": {
-			"keccak256": "0x961cc1fc869a77c0e274425fea2eff55698f9d0944176a5a9afee3dce358b0e0",
+			"keccak256": "0x395f96002b1301f782df9eb2ab2c053ca1b0a84db5d14aecd45448b90407a466",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://274529dade53c1ef7e36f57082adce1f7f2884e80bf1cb7e13ea9082d1452133",
-				"dweb:/ipfs/QmSdP78t11YPzDLZaAsUEH1amAh3y7cEAmr7AbCXw2ooG2"
+				"bzz-raw://5975094f7726d56affe684e2a8bd0d005eec87e207960a3822993ef617b58021",
+				"dweb:/ipfs/QmT7Y2cJwJY7mH98JdrzyMvcjxvh8Ews1hg2N9z8EPP8x6"
 			]
 		}
 	},

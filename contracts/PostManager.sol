@@ -98,8 +98,9 @@ contract PostManager {
         return tempUserPosts;
     }
 
-    function _postExists(uint postId) internal view returns (bool){
-        if(postIndex[postId].ownerId != 0 && !_isPostDeleted(postId)) return true;
+    function _postExists(uint _postId) internal view returns (bool){
+        PostLocation memory loc = postIndex[_postId];
+        if(loc.ownerId != 0 && !_isPostDeleted(_postId)) return true;
         else return false;
     }
 
